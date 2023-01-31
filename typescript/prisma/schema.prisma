@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id           Int           @id @default(autoincrement())
+  nome         String
+  email        String        @unique
+  senha        String
+  projetos     Projeto[]
+  colaboracoes Colaboracao[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Projeto {
+  id           Int           @id @default(autoincrement())
+  nome         String
+  orcamento    Int?          @default(0)
+  localizacao  String?
+  criador      Usuario       @relation(fields: [criadorId], references: [id])
+  criadorId    Int
+  colaboracoes Colaboracao[]
+  listas       Lista[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Colaboracao {
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id])
+  usuarioId Int
+  projeto   Projeto  @relation(fields: [projetoId], references: [id])
+  projetoId Int
+  permissao Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([usuarioId, projetoId])
+}
+
+model Lista {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  Projeto   Projeto? @relation(fields: [projetoId], references: [id])
+  projetoId Int?
+  tarefas   Tarefa[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Tarefa {
+  id            Int      @id @default(autoincrement())
+  nome          String
+  estado        Boolean
+  dataDeEntrega DateTime
+  Lista         Lista?   @relation(fields: [listaId], references: [id])
+  listaId       Int?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
