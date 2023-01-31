@@ -8,8 +8,8 @@ Antes de começar, verifique se você atendeu aos seguintes requisitos:
 * Caso não possua um `docker-compose.yml` na pasta da API que você deseja rodar, siga as instruções no `README.md` individual dela.
 
 ## 🚀 Planejamento e Progresso:
-Obs: há uma branch órfã separada para cada API que já foi criada ou que está em desenvolvimento.
-- [ ] TypeScript (Next + Prisma)
+Obs: há uma branch órfã separada para cada API que já foi criada ou que está em desenvolvimento (clique nos hiperlinks).
+- [ ] [TypeScript (Nest) [*em desenvolvimento*]](https://github.com/RicardoMarcal/APIs-project/tree/typescript)
 - [ ] PHP (Laravel)
 - [ ] Ruby (Rails)
 - [ ] Python (Django)
