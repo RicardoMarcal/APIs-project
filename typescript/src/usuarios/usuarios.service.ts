@@ -7,7 +7,10 @@ import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 export class UsuariosService {
   constructor(private prisma: PrismaService) {}
 
-  create(createUsuarioDto: CreateUsuarioDto) {
+  async create(createUsuarioDto: CreateUsuarioDto) {
+    createUsuarioDto.senha = await CreateUsuarioDto.hashSenha(
+      createUsuarioDto.senha,
+    );
     return this.prisma.usuario.create({ data: createUsuarioDto });
   }
 
@@ -16,7 +19,10 @@ export class UsuariosService {
   }
 
   findOne(id: number) {
-    return this.prisma.usuario.findUnique({ where: { id } });
+    return this.prisma.usuario.findUnique({
+      where: { id },
+      include: { projetos: true },
+    });
   }
 
   update(id: number, updateUsuarioDto: UpdateUsuarioDto) {

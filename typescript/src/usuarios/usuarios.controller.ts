@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { UsuariosService } from './usuarios.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
@@ -20,31 +22,59 @@ export class UsuariosController {
 
   @Post()
   @ApiCreatedResponse({ type: UsuarioEntity })
-  create(@Body() createUsuarioDto: CreateUsuarioDto) {
-    return this.usuariosService.create(createUsuarioDto);
+  async create(@Body() createUsuarioDto: CreateUsuarioDto) {
+    try {
+      return await this.usuariosService.create(createUsuarioDto);
+    } catch (e) {
+      if (e.code === 'P2002') {
+        throw new HttpException(
+          'This email violates the unique constraint',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    }
   }
 
   @Get()
   @ApiOkResponse({ type: UsuarioEntity, isArray: true })
-  findAll() {
-    return this.usuariosService.findAll();
+  async findAll() {
+    try {
+      return await this.usuariosService.findAll();
+    } catch (e) {
+      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Get(':id')
   @ApiOkResponse({ type: UsuarioEntity })
-  findOne(@Param('id') id: string) {
-    return this.usuariosService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    try {
+      return await this.usuariosService.findOne(+id);
+    } catch (e) {
+      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Patch(':id')
   @ApiOkResponse({ type: UsuarioEntity })
-  update(@Param('id') id: string, @Body() updateUsuarioDto: UpdateUsuarioDto) {
-    return this.usuariosService.update(+id, updateUsuarioDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateUsuarioDto: UpdateUsuarioDto,
+  ) {
+    try {
+      return await this.usuariosService.update(+id, updateUsuarioDto);
+    } catch (e) {
+      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Delete(':id')
   @ApiOkResponse({ type: UsuarioEntity })
-  remove(@Param('id') id: string) {
-    return this.usuariosService.remove(+id);
+  async remove(@Param('id') id: string) {
+    try {
+      return await this.usuariosService.remove(+id);
+    } catch (e) {
+      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+    }
   }
 }
