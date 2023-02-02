@@ -1,9 +1,0 @@
-{
-	"dependencies": {
-		"bcrypt": "^5.1.0",
-		"class-validator": "^0.14.0"
-	},
-	"devDependencies": {
-		"@types/bcrypt": "^5.0.0"
-	}
-}
