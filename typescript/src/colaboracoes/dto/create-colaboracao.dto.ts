@@ -3,11 +3,9 @@ import { IsInt, Min, Max } from 'class-validator';
 
 export class CreateColaboracaoDto {
   @IsInt()
-  @ApiProperty()
   usuarioId: number;
 
   @IsInt()
-  @ApiProperty()
   projetoId: number;
 
   @IsInt()

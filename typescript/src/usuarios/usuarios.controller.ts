@@ -16,7 +16,7 @@ import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { UsuarioEntity } from './entities/usuario.entity';
 
 @Controller('usuarios')
-@ApiTags('usuarios')
+@ApiTags('Usuários')
 export class UsuariosController {
   constructor(private readonly usuariosService: UsuariosService) {}
 
@@ -52,6 +52,16 @@ export class UsuariosController {
       return await this.usuariosService.findOne(+id);
     } catch (e) {
       throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Get('/email/:email')
+  @ApiOkResponse({ type: UsuarioEntity })
+  async findOneByEmail(@Param('email') email: string) {
+    try {
+      return await this.usuariosService.findOneByEmail(email);
+    } catch (e) {
+      throw new HttpException(e, HttpStatus.BAD_REQUEST);
     }
   }
 

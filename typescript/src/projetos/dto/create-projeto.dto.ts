@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt, IsNotEmpty, IsString, Length } from 'class-validator';
+import { IsInt, IsString, Length } from 'class-validator';
 
 export class CreateProjetoDto {
   @IsString()
@@ -15,8 +15,5 @@ export class CreateProjetoDto {
   @ApiProperty()
   localizacao: string | null;
 
-  @IsInt()
-  @IsNotEmpty()
-  @ApiProperty()
   criadorId: number;
 }

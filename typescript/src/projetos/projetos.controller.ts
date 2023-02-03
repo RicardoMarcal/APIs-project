@@ -15,15 +15,19 @@ import { UpdateProjetoDto } from './dto/update-projeto.dto';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ProjetoEntity } from './entities/projeto.entity';
 
-@Controller('projetos')
+@Controller('usuarios/:criadorId/projetos')
 @ApiTags('projetos')
 export class ProjetosController {
   constructor(private readonly projetosService: ProjetosService) {}
 
   @Post()
   @ApiCreatedResponse({ type: ProjetoEntity })
-  async create(@Body() createProjetoDto: CreateProjetoDto) {
+  async create(
+    @Param('criadorId') criadorId: string,
+    @Body() createProjetoDto: CreateProjetoDto,
+  ) {
     try {
+      createProjetoDto.criadorId = +criadorId;
       return await this.projetosService.create(createProjetoDto);
     } catch (e) {
       throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
@@ -32,9 +36,9 @@ export class ProjetosController {
 
   @Get()
   @ApiOkResponse({ type: ProjetoEntity, isArray: true })
-  async findAll() {
+  async findAll(@Param('criadorId') criadorId: string) {
     try {
-      return await this.projetosService.findAll();
+      return await this.projetosService.findAll(+criadorId);
     } catch (e) {
       throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
     }

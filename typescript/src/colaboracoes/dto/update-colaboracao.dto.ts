@@ -1,10 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsInt, Max, Min } from 'class-validator';
+import { PartialType } from '@nestjs/swagger';
+import { CreateColaboracaoDto } from './create-colaboracao.dto';
 
-export class UpdateColaboracaoDto {
-  @IsInt()
-  @Min(0)
-  @Max(2)
-  @ApiProperty()
-  permissao: number;
-}
+export class UpdateColaboracaoDto extends PartialType(CreateColaboracaoDto) {}

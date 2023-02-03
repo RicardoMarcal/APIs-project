@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { UsuarioSelect } from 'src/usuarios/entities/usuario.entity';
 import { CreateProjetoDto } from './dto/create-projeto.dto';
 import { UpdateProjetoDto } from './dto/update-projeto.dto';
 
@@ -11,12 +12,21 @@ export class ProjetosService {
     return this.prisma.projeto.create({ data: createProjetoDto });
   }
 
-  findAll() {
-    return this.prisma.projeto.findMany();
+  findAll(criadorId: number) {
+    return this.prisma.usuario.findMany({
+      where: { id: criadorId },
+      select: {
+        ...UsuarioSelect,
+        projetos: true,
+      },
+    });
   }
 
   findOne(id: number) {
-    return this.prisma.projeto.findUnique({ where: { id } });
+    return this.prisma.projeto.findUnique({
+      where: { id },
+      include: { listas: true },
+    });
   }
 
   update(id: number, updateProjetoDto: UpdateProjetoDto) {

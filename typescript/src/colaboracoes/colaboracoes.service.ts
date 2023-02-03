@@ -11,11 +11,7 @@ export class ColaboracoesService {
     return this.prisma.colaboracao.create({ data: createColaboracaoDto });
   }
 
-  findAll() {
-    return this.prisma.colaboracao.findMany();
-  }
-
-  findUserCollborations(usuarioId: number) {
+  findAll(usuarioId: number) {
     return this.prisma.colaboracao.findMany({ where: { usuarioId } });
   }
 

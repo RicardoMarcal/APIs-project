@@ -15,9 +15,51 @@ import { CreateColaboracaoDto } from './dto/create-colaboracao.dto';
 import { UpdateColaboracaoDto } from './dto/update-colaboracao.dto';
 import { ColaboracaoEntity } from './entities/colaboracao.entity';
 
-@Controller('colaboracoes')
+@Controller('usuarios/:usuarioId/colaboracoes')
 @ApiTags('colaboracoes')
 export class ColaboracoesController {
+  constructor(private readonly colaboracoesService: ColaboracoesService) {}
+
+  @Get()
+  @ApiOkResponse({ type: ColaboracaoEntity, isArray: true })
+  async findAll(@Param('usuarioId') usuarioId: string) {
+    try {
+      return await this.colaboracoesService.findAll(+usuarioId);
+    } catch (e) {
+      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Get(':projetoId')
+  @ApiOkResponse({ type: ColaboracaoEntity })
+  async findOne(
+    @Param('usuarioId') usuarioId: string,
+    @Param('projetoId') projetoId: string,
+  ) {
+    try {
+      return await this.colaboracoesService.findOne(+usuarioId, +projetoId);
+    } catch (e) {
+      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Delete(':usuarioId/:projetoId')
+  @ApiOkResponse({ type: ColaboracaoEntity })
+  async remove(
+    @Param('usuarioId') usuarioId: string,
+    @Param('projetoId') projetoId: string,
+  ) {
+    try {
+      return await this.colaboracoesService.remove(+usuarioId, +projetoId);
+    } catch (e) {
+      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+    }
+  }
+}
+
+@Controller('usuarios/:criadorId/projetos/:projetoId/colaboracoes')
+@ApiTags('colaboracoes')
+export class ColaboracoesProjetosController {
   constructor(private readonly colaboracoesService: ColaboracoesService) {}
 
   @Post()
@@ -32,25 +74,15 @@ export class ColaboracoesController {
 
   @Get()
   @ApiOkResponse({ type: ColaboracaoEntity, isArray: true })
-  async findAll() {
+  async findAll(@Param('usuarioId') usuarioId: string) {
     try {
-      return await this.colaboracoesService.findAll();
+      return await this.colaboracoesService.findAll(+usuarioId);
     } catch (e) {
       throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
     }
   }
 
-  @Get(':usuarioId')
-  @ApiOkResponse({ type: ColaboracaoEntity, isArray: true })
-  async findUserCollborations(@Param('usuarioId') usuarioId: string) {
-    try {
-      return await this.colaboracoesService.findUserCollborations(+usuarioId);
-    } catch (e) {
-      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
-    }
-  }
-
-  @Get(':usuarioId/:projetoId')
+  @Get(':usuarioEmail')
   @ApiOkResponse({ type: ColaboracaoEntity })
   async findOne(
     @Param('usuarioId') usuarioId: string,

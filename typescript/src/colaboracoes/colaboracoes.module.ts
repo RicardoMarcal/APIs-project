@@ -1,10 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ColaboracoesService } from './colaboracoes.service';
-import { ColaboracoesController } from './colaboracoes.controller';
+import {
+  ColaboracoesController,
+  ColaboracoesProjetosController,
+} from './colaboracoes.controller';
 import { PrismaModule } from 'src/prisma/prisma.module';
 
 @Module({
-  controllers: [ColaboracoesController],
+  controllers: [ColaboracoesController, ColaboracoesProjetosController],
   providers: [ColaboracoesService],
   imports: [PrismaModule],
 })
