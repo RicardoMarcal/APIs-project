@@ -11,8 +11,9 @@ Descrição
 					- [ ] /usuarios/{usuarioId}/projetos/{projetoId}/listas/{listaId} **(rud)**
 						- [ ] /usuarios/{usuarioId}/projetos/{projetoId}/listas/{listaId}/tarefas **(cr)**
 							- [ ] /usuarios/{usuarioId}/projetos/{projetoId}/listas/{listaId}/tarefas/{tarefaId} **(rud)**
-				- [ ] /usuarios/{usuarioId}/projetos/{projetoId}/colaboracoes **(ccr)**
+				- [ ] /usuarios/{usuarioId}/projetos/{projetoId}/colaboracoes **(cr)**
+				- [ ] /usuarios/{usuarioId}/projetos/{projetoId}/colaboracoes/email **(cr)**
 					- [ ] /usuarios/{usuarioId}/projetos/{projetoId}/colaboracoes/{usuarioId} **(rud)**
 		- [x] /usuarios/{usuarioId}/colaboracoes **(r)**
-			- [x] /usuarios/{usuarioId}/colaboracoes/{projetoId} **(rud)**
-	- [x] /usuarios/{usuarioEmail} **(r)**
+			- [x] /usuarios/{usuarioId}/colaboracoes/{projetoId} **(rd)**
+		- [x] /usuarios/email/{usuarioEmail} **(r)**

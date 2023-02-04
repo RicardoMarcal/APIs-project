@@ -23,7 +23,7 @@ export class UsuariosService {
   }
 
   findOne(id: number) {
-    return this.prisma.usuario.findUnique({
+    return this.prisma.usuario.findUniqueOrThrow({
       where: { id },
       select: {
         ...UsuarioSelect,
@@ -33,7 +33,7 @@ export class UsuariosService {
   }
 
   findOneByEmail(email: string) {
-    return this.prisma.usuario.findUnique({
+    return this.prisma.usuario.findUniqueOrThrow({
       where: { email },
       select: { ...UsuarioSelect },
     });

@@ -6,8 +6,7 @@ import {
   Patch,
   Param,
   Delete,
-  HttpException,
-  HttpStatus,
+  BadRequestException,
 } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ColaboracoesService } from './colaboracoes.service';
@@ -26,7 +25,7 @@ export class ColaboracoesController {
     try {
       return await this.colaboracoesService.findAll(+usuarioId);
     } catch (e) {
-      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+      throw new BadRequestException();
     }
   }
 
@@ -39,7 +38,7 @@ export class ColaboracoesController {
     try {
       return await this.colaboracoesService.findOne(+usuarioId, +projetoId);
     } catch (e) {
-      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+      throw new BadRequestException();
     }
   }
 
@@ -52,7 +51,7 @@ export class ColaboracoesController {
     try {
       return await this.colaboracoesService.remove(+usuarioId, +projetoId);
     } catch (e) {
-      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+      throw new BadRequestException();
     }
   }
 }
@@ -68,7 +67,7 @@ export class ColaboracoesProjetosController {
     try {
       return await this.colaboracoesService.create(createColaboracoeDto);
     } catch (e) {
-      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+      throw new BadRequestException();
     }
   }
 
@@ -78,7 +77,7 @@ export class ColaboracoesProjetosController {
     try {
       return await this.colaboracoesService.findAll(+usuarioId);
     } catch (e) {
-      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+      throw new BadRequestException();
     }
   }
 
@@ -91,7 +90,7 @@ export class ColaboracoesProjetosController {
     try {
       return await this.colaboracoesService.findOne(+usuarioId, +projetoId);
     } catch (e) {
-      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+      throw new BadRequestException();
     }
   }
 
@@ -109,7 +108,7 @@ export class ColaboracoesProjetosController {
         updateColaboracaoDto,
       );
     } catch (e) {
-      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+      throw new BadRequestException();
     }
   }
 
@@ -122,7 +121,7 @@ export class ColaboracoesProjetosController {
     try {
       return await this.colaboracoesService.remove(+usuarioId, +projetoId);
     } catch (e) {
-      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+      throw new BadRequestException();
     }
   }
 }

@@ -7,7 +7,7 @@ import {
   Param,
   Delete,
   HttpException,
-  HttpStatus,
+  BadRequestException,
 } from '@nestjs/common';
 import { ProjetosService } from './projetos.service';
 import { CreateProjetoDto } from './dto/create-projeto.dto';
@@ -30,7 +30,7 @@ export class ProjetosController {
       createProjetoDto.criadorId = +criadorId;
       return await this.projetosService.create(createProjetoDto);
     } catch (e) {
-      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+      throw new BadRequestException();
     }
   }
 
@@ -40,40 +40,47 @@ export class ProjetosController {
     try {
       return await this.projetosService.findAll(+criadorId);
     } catch (e) {
-      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+      throw new BadRequestException();
     }
   }
 
   @Get(':id')
   @ApiOkResponse({ type: ProjetoEntity })
-  async findOne(@Param('id') id: string) {
+  async findOne(
+    @Param('criadorId') criadorId: string,
+    @Param('id') id: string,
+  ) {
     try {
-      return await this.projetosService.findOne(+id);
+      return await this.projetosService.findOne(+criadorId, +id);
     } catch (e) {
-      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+      if (e instanceof HttpException) {
+        throw e;
+      }
+      throw new BadRequestException();
     }
   }
 
   @Patch(':id')
   @ApiOkResponse({ type: ProjetoEntity })
   async update(
+    @Param('criadorId') criadorId: string,
     @Param('id') id: string,
     @Body() updateProjetoDto: UpdateProjetoDto,
   ) {
     try {
       return await this.projetosService.update(+id, updateProjetoDto);
     } catch (e) {
-      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+      throw new BadRequestException();
     }
   }
 
   @Delete(':id')
   @ApiOkResponse({ type: ProjetoEntity })
-  async remove(@Param('id') id: string) {
+  async remove(@Param('criadorId') criadorId: string, @Param('id') id: string) {
     try {
       return await this.projetosService.remove(+id);
     } catch (e) {
-      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+      throw new BadRequestException();
     }
   }
 }

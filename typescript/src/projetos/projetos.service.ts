@@ -22,10 +22,16 @@ export class ProjetosService {
     });
   }
 
-  findOne(id: number) {
-    return this.prisma.projeto.findUnique({
-      where: { id },
-      include: { listas: true },
+  findOne(criadorId: number, id: number) {
+    return this.prisma.projeto.findFirstOrThrow({
+      where: { AND: [{ criadorId }, { id }] },
+      include: {
+        listas: {
+          include: {
+            tarefas: true,
+          },
+        },
+      },
     });
   }
 

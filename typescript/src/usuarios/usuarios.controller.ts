@@ -6,8 +6,7 @@ import {
   Patch,
   Param,
   Delete,
-  HttpException,
-  HttpStatus,
+  BadRequestException,
 } from '@nestjs/common';
 import { UsuariosService } from './usuarios.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
@@ -27,11 +26,11 @@ export class UsuariosController {
       return await this.usuariosService.create(createUsuarioDto);
     } catch (e) {
       if (e.code === 'P2002') {
-        throw new HttpException(
+        throw new BadRequestException(
           'This email violates the unique constraint',
-          HttpStatus.BAD_REQUEST,
         );
       }
+      throw new BadRequestException();
     }
   }
 
@@ -41,7 +40,7 @@ export class UsuariosController {
     try {
       return await this.usuariosService.findAll();
     } catch (e) {
-      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+      throw new BadRequestException();
     }
   }
 
@@ -51,7 +50,10 @@ export class UsuariosController {
     try {
       return await this.usuariosService.findOne(+id);
     } catch (e) {
-      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+      if (e.code === 'P2025') {
+        throw new BadRequestException("There is no 'usuario' with this id");
+      }
+      throw new BadRequestException();
     }
   }
 
@@ -61,7 +63,10 @@ export class UsuariosController {
     try {
       return await this.usuariosService.findOneByEmail(email);
     } catch (e) {
-      throw new HttpException(e, HttpStatus.BAD_REQUEST);
+      if (e.code === 'P2025') {
+        throw new BadRequestException("There is no 'usuario' with this email");
+      }
+      throw new BadRequestException();
     }
   }
 
@@ -74,7 +79,10 @@ export class UsuariosController {
     try {
       return await this.usuariosService.update(+id, updateUsuarioDto);
     } catch (e) {
-      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+      if (e.code === 'P2025') {
+        throw new BadRequestException("There is no 'usuario' with this id");
+      }
+      throw new BadRequestException();
     }
   }
 
@@ -84,7 +92,10 @@ export class UsuariosController {
     try {
       return await this.usuariosService.remove(+id);
     } catch (e) {
-      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+      if (e.code === 'P2025') {
+        throw new BadRequestException("There is no 'usuario' with this id");
+      }
+      throw new BadRequestException();
     }
   }
 }
