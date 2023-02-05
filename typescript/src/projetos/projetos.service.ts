@@ -13,7 +13,7 @@ export class ProjetosService {
   }
 
   findAll(criadorId: number) {
-    return this.prisma.usuario.findMany({
+    return this.prisma.usuario.findUniqueOrThrow({
       where: { id: criadorId },
       select: {
         ...UsuarioSelect,
@@ -23,8 +23,8 @@ export class ProjetosService {
   }
 
   findOne(criadorId: number, id: number) {
-    return this.prisma.projeto.findFirstOrThrow({
-      where: { AND: [{ criadorId }, { id }] },
+    return this.prisma.projeto.findUniqueOrThrow({
+      where: { id_criadorId: { criadorId, id } },
       include: {
         listas: {
           include: {
@@ -35,14 +35,16 @@ export class ProjetosService {
     });
   }
 
-  update(id: number, updateProjetoDto: UpdateProjetoDto) {
+  update(criadorId: number, id: number, updateProjetoDto: UpdateProjetoDto) {
     return this.prisma.projeto.update({
-      where: { id },
+      where: { id_criadorId: { criadorId, id } },
       data: updateProjetoDto,
     });
   }
 
-  remove(id: number) {
-    return this.prisma.projeto.delete({ where: { id } });
+  remove(criadorId: number, id: number) {
+    return this.prisma.projeto.delete({
+      where: { id_criadorId: { criadorId, id } },
+    });
   }
 }

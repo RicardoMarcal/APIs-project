@@ -32,6 +32,8 @@ model Projeto {
   listas       Lista[]
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
+
+  @@unique([id, criadorId])
 }
 
 model Colaboracao {
@@ -49,11 +51,13 @@ model Colaboracao {
 model Lista {
   id        Int      @id @default(autoincrement())
   nome      String
-  Projeto   Projeto? @relation(fields: [projetoId], references: [id])
+  projeto   Projeto? @relation(fields: [projetoId], references: [id])
   projetoId Int?
   tarefas   Tarefa[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([id, projetoId])
 }
 
 model Tarefa {
@@ -65,4 +69,6 @@ model Tarefa {
   listaId       Int?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+
+  @@unique([id, listaId])
 }

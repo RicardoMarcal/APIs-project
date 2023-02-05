@@ -6,8 +6,8 @@ import {
   Patch,
   Param,
   Delete,
-  HttpException,
   BadRequestException,
+  NotFoundException,
 } from '@nestjs/common';
 import { ProjetosService } from './projetos.service';
 import { CreateProjetoDto } from './dto/create-projeto.dto';
@@ -30,6 +30,9 @@ export class ProjetosController {
       createProjetoDto.criadorId = +criadorId;
       return await this.projetosService.create(createProjetoDto);
     } catch (e) {
+      if (e.code === 'P2003') {
+        throw new NotFoundException("There is no 'usuario' with this id");
+      }
       throw new BadRequestException();
     }
   }
@@ -40,6 +43,9 @@ export class ProjetosController {
     try {
       return await this.projetosService.findAll(+criadorId);
     } catch (e) {
+      if (e.code === 'P2025') {
+        throw new NotFoundException("There is no 'usuario' with this id");
+      }
       throw new BadRequestException();
     }
   }
@@ -53,8 +59,8 @@ export class ProjetosController {
     try {
       return await this.projetosService.findOne(+criadorId, +id);
     } catch (e) {
-      if (e instanceof HttpException) {
-        throw e;
+      if (e.code === 'P2025') {
+        throw new NotFoundException(e.meta?.cause);
       }
       throw new BadRequestException();
     }
@@ -68,8 +74,15 @@ export class ProjetosController {
     @Body() updateProjetoDto: UpdateProjetoDto,
   ) {
     try {
-      return await this.projetosService.update(+id, updateProjetoDto);
+      return await this.projetosService.update(
+        +criadorId,
+        +id,
+        updateProjetoDto,
+      );
     } catch (e) {
+      if (e.code === 'P2025') {
+        throw new NotFoundException(e.meta?.cause);
+      }
       throw new BadRequestException();
     }
   }
@@ -78,8 +91,11 @@ export class ProjetosController {
   @ApiOkResponse({ type: ProjetoEntity })
   async remove(@Param('criadorId') criadorId: string, @Param('id') id: string) {
     try {
-      return await this.projetosService.remove(+id);
+      return await this.projetosService.remove(+criadorId, +id);
     } catch (e) {
+      if (e.code === 'P2025') {
+        throw new NotFoundException(e.meta?.cause);
+      }
       throw new BadRequestException();
     }
   }

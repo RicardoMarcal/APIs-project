@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   BadRequestException,
+  NotFoundException,
 } from '@nestjs/common';
 import { UsuariosService } from './usuarios.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
@@ -51,7 +52,7 @@ export class UsuariosController {
       return await this.usuariosService.findOne(+id);
     } catch (e) {
       if (e.code === 'P2025') {
-        throw new BadRequestException("There is no 'usuario' with this id");
+        throw new NotFoundException("There is no 'usuario' with this id");
       }
       throw new BadRequestException();
     }
@@ -64,7 +65,7 @@ export class UsuariosController {
       return await this.usuariosService.findOneByEmail(email);
     } catch (e) {
       if (e.code === 'P2025') {
-        throw new BadRequestException("There is no 'usuario' with this email");
+        throw new NotFoundException("There is no 'usuario' with this email");
       }
       throw new BadRequestException();
     }
@@ -80,7 +81,7 @@ export class UsuariosController {
       return await this.usuariosService.update(+id, updateUsuarioDto);
     } catch (e) {
       if (e.code === 'P2025') {
-        throw new BadRequestException("There is no 'usuario' with this id");
+        throw new NotFoundException("There is no 'usuario' with this id");
       }
       throw new BadRequestException();
     }
@@ -93,7 +94,7 @@ export class UsuariosController {
       return await this.usuariosService.remove(+id);
     } catch (e) {
       if (e.code === 'P2025') {
-        throw new BadRequestException("There is no 'usuario' with this id");
+        throw new NotFoundException("There is no 'usuario' with this id");
       }
       throw new BadRequestException();
     }
