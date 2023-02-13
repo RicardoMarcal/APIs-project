@@ -27,7 +27,7 @@ export class UsuariosService {
       where: { id },
       select: {
         ...UsuarioSelect,
-        projetos: true,
+        projetos: { include: { listas: { include: { tarefas: true } } } },
       },
     });
   }

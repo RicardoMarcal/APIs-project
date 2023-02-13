@@ -16,7 +16,7 @@ import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ProjetoEntity } from './entities/projeto.entity';
 
 @Controller('usuarios/:criadorId/projetos')
-@ApiTags('projetos')
+@ApiTags('Projetos')
 export class ProjetosController {
   constructor(private readonly projetosService: ProjetosService) {}
 
