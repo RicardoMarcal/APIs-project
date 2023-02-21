@@ -30,7 +30,7 @@ export class ListasController {
       return await this.listasService.create(createListaDto);
     } catch (e) {
       if (e.code === 'P2003') {
-        throw new NotFoundException("There is no 'usuario' with this id");
+        throw new NotFoundException();
       }
       throw new BadRequestException();
     }
